@@ -1,7 +1,7 @@
-const Filter = ({ search, handleSearch}) => {
+const Filter = ({ searchTerm, handleSearchTermChange }) => {
   return (
     <div>
-      search: <input type='text' value={search} onChange={handleSearch} />
+      search: <input type='text' value={searchTerm} onChange={handleSearchTermChange} placeholder="Find a contact..." />
     </div>
   )
 }
