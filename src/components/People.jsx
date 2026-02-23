@@ -1,11 +1,51 @@
-const People = ({ people, searchTerm, handleDeleteContact, handleUpdateContact}) => {
+import { useState } from "react";
+
+const People = ({ people, searchTerm, handleDeleteContact, handleChange}) => {
   return (
     <ul>
       {people.filter(person => {
         return searchTerm === '' ? person : person.name.toLowerCase().includes(searchTerm.toLowerCase());
       })
-      .map(person => <p key={person.name}>{person.name} {person.number} <button onClick={() => handleUpdateContact(person.id, person.name, person.number)} type='submit' >Edit</button> <button onClick={() => handleDeleteContact(person.id, person.name)} type='submit'>Delete</button></p>)}
+      .map(person => 
+        <li key={person.id}>
+          <Person person={person} handleDeleteContact={handleDeleteContact} handleChange={handleChange} />
+        </li>
+    )}
     </ul>
+  )
+}
+
+const Person = ({person, handleChange, handleDeleteContact}) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [number, setNumber] = useState(person.number)
+
+  let contactContent;
+
+  if (isEditing) {
+    contactContent = (
+      <>
+        {person.name}
+        <input
+          type='tel'
+          value={number}
+          onChange={e => {
+            setNumber(e.target.value);
+          }}
+        />
+        <button onClick={() => setIsEditing(false)}>Save</button>
+      </>
+    );
+  } else {
+    contactContent = (
+      <>
+        {person.name} {person.number} <button onClick={() => setIsEditing(true)}>Edit</button>
+      </>
+    )
+  }
+  return (
+    <div>
+      {contactContent} <button onClick={() => handleDeleteContact(person.id, person.name)}>Delete</button>
+    </div>
   )
 }
 

@@ -4,6 +4,7 @@ import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import People from './components/People';
 import Notification from './components/Notification';
+import '../src/App.css';
 
 function App() {
   const [people, setPeople] = useState([]);
@@ -21,7 +22,7 @@ function App() {
       })
   }
 
-  useEffect(hook, [])
+  useEffect(hook, [people])
 
   const handleAddContact = e => {
     e.preventDefault();
@@ -31,39 +32,59 @@ function App() {
       number: newNumber
     }
 
-    const nameExists = people.some(person => person.name === newName);
+    const nameExists = people.find(person => person.name.toLowerCase() === newName.toLowerCase());
     if (nameExists) {
-      alert(`${newName} is already added to the phonebook`)
+      const exist = confirm(`${newName} is already added to the phonebook. Do you want to change their phone number?`)
       
-    peopleService
-      .update(nameExists.id, contact)
-      .then(() => {
-        setNewNumber();
-        setSuccessMessage(`Contact info for ${nameExists.name} has been updated!`)
-        setTimeout(() => {
-          setSuccessMessage(null)
-        }, 5000)
-        .catch(error => {
-          setErrorMessage(`Contact for ${nameExists.name} has already been removed!`)
-          console.log(error.message)
+      if (!exist) {
+        // if user does not exist return
+        return
+      }
+      //update the existing contact
+      peopleService
+        .update(nameExists.id, contact)
+        .then(updatedContact => {
+          setPeople(person => person.id === nameExists.id ? updatedContact : people);
+          setSuccessMessage(`Contact info for ${nameExists.name} has been updated!`)
           setTimeout(() => {
             setSuccessMessage(null)
-          }, 5000)
-        });
-    });
-    } 
+          }, 5000);
+          setNewName('');
+          setNewNumber('');
+        })
+          .catch(error => {
+            setErrorMessage(`Contact for ${nameExists.name} has already been removed!`)
+            console.log(error.message)
+            setTimeout(() => {
+              setSuccessMessage(null)
+            }, 5000)
+          });
+    } else {
+      //create a new contact if the name contact does not exist
+      peopleService
+        .create(contact)
+        .then(response => {
+          setPeople(people.concat(response.data));
+          setSuccessMessage(`${contact.name} has been added to the Phonebook!`)
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000);
+          setNewName('');
+          setNewNumber('');
+      });  
+    }
+  }
 
-    peopleService
-      .create(contact)
-      .then(response => {
-        setPeople(people.concat(response.data));
-        setSuccessMessage(`${contact.name} has been added to the Phonebook!`)
-        setTimeout(() => {
-          setSuccessMessage(null)
-        }, 5000);
-        setNewName('');
-        setNewNumber('');
-    });  
+  const handleChange = (person) => {
+    setPeople(
+      people.map(p => {
+        if (p.id === person.id) {
+          return person;
+        } else {
+          return p;
+        }
+      })
+    );
   }
 
   const handleDeleteContact = (id, name) => {
@@ -75,23 +96,6 @@ function App() {
       .remove(id)
       .then(() => setPeople(people.filter(person => person.id !== id)))
       .catch((error) => console.log(error.message));
-  }
-
-  const handleUpdateContact = (id, name, number) => {
-    const confirmUpdate = window.confirm(`Are you sure you want to replace the number for ${name}?`);
-
-    if (!confirmUpdate) return;
-
-    peopleService
-      .update(id)
-      .then(() => console.log(number))
-      .catch(error => {
-        setErrorMessage(`Contact for ${name} has already been removed!`)
-        // console.log(error.message)
-        setTimeout(() => {
-          setSuccessMessage(null)
-        }, 5000)
-      });;
   }
 
   const handleNameChange = e => {setNewName(e.target.value);}
@@ -108,7 +112,7 @@ function App() {
       <h3>Add a new contact:</h3>
       <PersonForm handleAddContact={handleAddContact} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h3>Contacts</h3>
-      <People people={people} searchTerm={searchTerm} handleDeleteContact={handleDeleteContact} handleUpdateContact={handleUpdateContact} />
+      <People people={people} searchTerm={searchTerm} handleDeleteContact={handleDeleteContact} handleChange={handleChange} />
     </div>
   )
 }
