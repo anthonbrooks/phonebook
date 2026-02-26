@@ -7,7 +7,7 @@ import Notification from './components/Notification';
 import '../src/App.css';
 
 function App() {
-  const [people, setPeople] = useState([]);
+  const [people, setPeople] = useState(null);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,10 +19,14 @@ function App() {
       .getAll()
       .then(response => {
         setPeople(response.data)
-      })
+      }).catch(error => console.log(error));
   }
 
   useEffect(hook, [people])
+
+  if (!people) {
+    return null;
+  }
 
   const handleAddContact = e => {
     e.preventDefault();
