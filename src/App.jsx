@@ -110,7 +110,7 @@ function App() {
   
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h2 className='text-3xl'>Phonebook</h2>
       <Notification successMessage={successMessage} errorMessage={errorMessage} />
       <Filter searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
       <h3>Add a new contact:</h3>

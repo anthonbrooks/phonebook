@@ -32,19 +32,19 @@ const Person = ({person, handleChange, handleDeleteContact}) => {
             setNumber(e.target.value);
           }}
         />
-        <button onClick={() => setIsEditing(false)}>Save</button>
+        <button className="border rounded-md cursor-pointer" onClick={() => setIsEditing(false)}>Save</button>
       </>
     );
   } else {
     contactContent = (
       <>
-        {person.name} {person.number} <button onClick={() => setIsEditing(true)}>Edit</button>
+        {person.name} {person.number} <button className="border rounded-md cursor-pointer" onClick={() => setIsEditing(true)}>Edit</button>
       </>
     )
   }
   return (
     <div>
-      {contactContent} <button onClick={() => handleDeleteContact(person.id, person.name)}>Delete</button>
+      {contactContent} <button className="border rounded-md cursor-pointer" onClick={() => handleDeleteContact(person.id, person.name)}>Delete</button>
     </div>
   )
 }

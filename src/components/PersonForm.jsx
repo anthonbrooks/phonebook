@@ -2,13 +2,13 @@ const PersonForm = ({ handleAddContact, newName, handleNameChange, newNumber, ha
   return (
     <form onSubmit={handleAddContact}>
       <div>
-        <label htmlFor='name'>name:</label> <input type='text' id='name' value={newName} onChange={handleNameChange} required />
+        <label htmlFor='name'>name:</label> <input className="border rounded-md cursor-pointer" type='text' id='name' value={newName} onChange={handleNameChange} required />
       </div>
       <div>
-        <label htmlFor='phone'>phone number:</label> <input type='tel' id='phone' value={newNumber} onChange={handleNumberChange} required />
+        <label htmlFor='phone'>phone number:</label> <input className="border rounded-md cursor-pointer" type='tel' id='phone' value={newNumber} onChange={handleNumberChange} required />
       </div>
       <div>
-        <button>add</button>
+        <button className="border rounded-md cursor-pointer">add</button>
       </div>
     </form>
   )
