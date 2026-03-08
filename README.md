@@ -1,31 +1,45 @@
-# React + Vite
+# Phonebook
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a virtual phonebook that I built using React, TailwindCSS, JSON-Server, Vite.
 
-Currently, two official plugins are available:
+**Link to project:** https://anthonbrooks.github.io/calculator/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Project Screenshot](/public/images/phonebook-app.png)
 
-## React Compiler
+## How It's Made:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Tech used:** React, TailwindCSS, JSON-Server, Vite
 
-## Expanding the ESLint configuration
+Vite was used to initiate the project and create the directory structure.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+React was used to create dynamic components that pull data directly from the JSON-Server, which holds the contact information.
+
+TailwindCSS is used to style the components and correct alignment of items.
+
+## Optimizations
+
+_Optimizations will be made in the future as my knowledge of Web development grows!_
+
+## Lessons Learned:
+
+I learned how to generate dynamic lists with React. Also, how to create my own JSON-Server to host my data. Dynamic searching was implemented using the React/JS filter() and map() methods.
 
 To get started, install app dependencies:
+
 ```
 npm install
 ```
+
 Then start the json database server:
-``` 
+
+```
 npm run server
 ```
 
 Then start the development server:
-``` 
+
+```
 npm run dev
 ```
-Then go to localhost:5173 in your browser to see the app running.
+
+Then go to localhost:5173 in your browser to see the app running. Unless you are instructed to use another port in your terminal.

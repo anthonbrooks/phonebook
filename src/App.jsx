@@ -1,95 +1,104 @@
-import { useState, useEffect } from 'react';
-import peopleService from './services/people.js'
-import Filter from './components/Filter';
-import PersonForm from './components/PersonForm';
-import People from './components/People';
-import Notification from './components/Notification';
-import '../src/App.css';
+import { useState, useEffect } from "react";
+import peopleService from "./services/people.js";
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import People from "./components/People";
+import Notification from "./components/Notification";
+import "../src/App.css";
 
 function App() {
   const [people, setPeople] = useState(null);
-  const [newName, setNewName] = useState('');
-  const [newNumber, setNewNumber] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const hook = () => {
     peopleService
       .getAll()
-      .then(response => {
-        setPeople(response.data)
-      }).catch(error => console.log(error));
-  }
+      .then((response) => {
+        setPeople(response.data);
+      })
+      .catch((error) => console.log(error));
+  };
 
-  useEffect(hook, [people])
+  useEffect(hook, [people]);
 
   if (!people) {
     return null;
   }
 
-  const handleAddContact = e => {
+  const handleAddContact = (e) => {
     e.preventDefault();
 
     const contact = {
       name: newName,
-      number: newNumber
-    }
+      number: newNumber,
+    };
 
-    const nameExists = people.find(person => person.name.toLowerCase() === newName.toLowerCase());
+    const nameExists = people.find(
+      (person) => person.name.toLowerCase() === newName.toLowerCase(),
+    );
     if (nameExists) {
-      const exist = confirm(`${newName} is already added to the phonebook. Do you want to change their phone number?`)
-      
+      const exist = confirm(
+        `${newName} is already added to the phonebook. Do you want to change their phone number?`,
+      );
+
       if (!exist) {
         // if user does not exist return
-        return
+        return;
       }
       //update the existing contact
       peopleService
         .update(nameExists.id, contact)
-        .then(updatedContact => {
-          setPeople(person => person.id === nameExists.id ? updatedContact : people);
-          setSuccessMessage(`Contact info for ${nameExists.name} has been updated!`)
+        .then((updatedContact) => {
+          setPeople((person) =>
+            person.id === nameExists.id ? updatedContact : people,
+          );
+          setSuccessMessage(
+            `Contact info for ${nameExists.name} has been updated!`,
+          );
           setTimeout(() => {
-            setSuccessMessage(null)
+            setSuccessMessage(null);
           }, 5000);
-          setNewName('');
-          setNewNumber('');
+          setNewName("");
+          setNewNumber("");
         })
-          .catch(error => {
-            setErrorMessage(`Contact for ${nameExists.name} has already been removed!`)
-            console.log(error.message)
-            setTimeout(() => {
-              setSuccessMessage(null)
-            }, 5000)
-          });
+        .catch((error) => {
+          setErrorMessage(
+            `Contact for ${nameExists.name} has already been removed!`,
+          );
+          console.log(error.message);
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 5000);
+        });
     } else {
       //create a new contact if the name contact does not exist
-      peopleService
-        .create(contact)
-        .then(response => {
-          setPeople(people.concat(response.data));
-          setSuccessMessage(`${contact.name} has been added to the Phonebook!`)
-          setTimeout(() => {
-            setSuccessMessage(null)
-          }, 5000);
-          setNewName('');
-          setNewNumber('');
-      });  
+      peopleService.create(contact).then((response) => {
+        setPeople(people.concat(response.data));
+        setSuccessMessage(`${contact.name} has been added to the Phonebook!`);
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 5000);
+        setNewName("");
+        setNewNumber("");
+      });
     }
-  }
+  };
 
   const handleChange = (person) => {
     setPeople(
-      people.map(p => {
+      people.map((p) => {
         if (p.id === person.id) {
           return person;
         } else {
           return p;
         }
-      })
+      }),
     );
-  }
+  };
 
   const handleDeleteContact = (id, name) => {
     const confirmRemoval = window.confirm(`Delete ${name}?`);
@@ -98,27 +107,52 @@ function App() {
 
     peopleService
       .remove(id)
-      .then(() => setPeople(people.filter(person => person.id !== id)))
+      .then(() => setPeople(people.filter((person) => person.id !== id)))
       .catch((error) => console.log(error.message));
-  }
+  };
 
-  const handleNameChange = e => {setNewName(e.target.value);}
+  const handleNameChange = (e) => {
+    setNewName(e.target.value);
+  };
 
-  const handleNumberChange = e => {setNewNumber(e.target.value)};
+  const handleNumberChange = (e) => {
+    setNewNumber(e.target.value);
+  };
 
-  const handleSearchTermChange = e => {setSearchTerm(e.target.value)};
-  
+  const handleSearchTermChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
-    <div>
-      <h2 className='text-3xl'>Phonebook</h2>
-      <Notification successMessage={successMessage} errorMessage={errorMessage} />
-      <Filter searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
-      <h3>Add a new contact:</h3>
-      <PersonForm handleAddContact={handleAddContact} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
-      <h3>Contacts</h3>
-      <People people={people} searchTerm={searchTerm} handleDeleteContact={handleDeleteContact} handleChange={handleChange} />
+    <div className="flex justify-center">
+      <div className="bg-sky-100 rounded-3xl w-[65%] m-8 p-3">
+        <h2 className="text-5xl">Phonebook</h2>
+        <Notification
+          successMessage={successMessage}
+          errorMessage={errorMessage}
+        />
+        <Filter
+          searchTerm={searchTerm}
+          handleSearchTermChange={handleSearchTermChange}
+        />
+        <h3 className="text-xl font-semibold">Add a new contact:</h3>
+        <PersonForm
+          handleAddContact={handleAddContact}
+          newName={newName}
+          handleNameChange={handleNameChange}
+          newNumber={newNumber}
+          handleNumberChange={handleNumberChange}
+        />
+        <h3 className="text-2xl">Contacts</h3>
+        <People
+          people={people}
+          searchTerm={searchTerm}
+          handleDeleteContact={handleDeleteContact}
+          handleChange={handleChange}
+        />
+      </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
