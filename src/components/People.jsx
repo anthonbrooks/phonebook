@@ -38,7 +38,7 @@ const Person = ({ person, handleChange, handleDeleteContact }) => {
 
   if (isEditing) {
     contactContent = (
-      <div className="grid grid-cols-[2fr_2fr_auto_auto] items-center gap-4 font-bold p-2">
+      <div className="grid md:grid-cols-[2fr_2fr_auto_auto] grid-cols-1 items-center gap-4 font-bold p-2">
         {person.name}
         <input
           type="tel"
@@ -46,11 +46,11 @@ const Person = ({ person, handleChange, handleDeleteContact }) => {
           onChange={(e) => {
             setNumber(e.target.value);
           }}
-          className="bg-white rounded-xl text-center"
+          className="bg-white rounded-xl text-center md:w-40"
         />
         <div>
           <button
-            className="border rounded-md cursor-pointer p-1"
+            className="border rounded-md cursor-pointer p-1 mr-2"
             onClick={() => setIsEditing(false)}
           >
             Save
@@ -66,12 +66,12 @@ const Person = ({ person, handleChange, handleDeleteContact }) => {
     );
   } else {
     contactContent = (
-      <div className="grid grid-cols-[2fr_2fr_auto_auto] items-center gap-4 font-bold p-2">
+      <div className="grid md:grid-cols-[2fr_2fr_auto_auto] grid-cols-1 items-center gap-4 font-bold p-2">
         <div>{person.name}</div>
         <div className="text-center">{person.number}</div>
-        <div className="flex justify-end">
+        <div className="">
           <button
-            className="border rounded-md cursor-pointer p-1"
+            className="border rounded-md cursor-pointer p-1 mr-2"
             onClick={() => setIsEditing(true)}
           >
             Edit

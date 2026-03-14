@@ -125,8 +125,8 @@ function App() {
 
   return (
     <div className="flex justify-center">
-      <div className="bg-sky-100 rounded-3xl w-[65%] m-8 p-3">
-        <h2 className="text-5xl">Phonebook</h2>
+      <div className="bg-sky-100 rounded-3xl md:w-[65%] m-8 p-3">
+        <h2 className="md:text-5xl text-4xl">Phonebook</h2>
         <Notification
           successMessage={successMessage}
           errorMessage={errorMessage}

@@ -6,7 +6,10 @@ const PersonForm = ({
   handleNumberChange,
 }) => {
   return (
-    <form onSubmit={handleAddContact} className="flex justify-center">
+    <form
+      onSubmit={handleAddContact}
+      className="flex justify-center md:flex-row flex-col"
+    >
       <div>
         <label htmlFor="name" className="hidden">
           name
